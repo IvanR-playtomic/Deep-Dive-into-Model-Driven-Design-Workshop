@@ -22,6 +22,8 @@ public class SeatingArrangementRecommender {
                 PricingCategory.SECOND));
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.THIRD));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
+                PricingCategory.IGNORED));
 
         if (suggestionsMade.matchExpectations())
             return suggestionsMade;
@@ -37,10 +39,7 @@ public class SeatingArrangementRecommender {
             var seatingOptionSuggested = auditoriumSeatingArrangement.suggestSeatingOptionFor(partyRequested, pricingCategory);
 
             if (seatingOptionSuggested.matchExpectation()) {
-                for (var seatingPlace : seatingOptionSuggested.seats()) {
-                    seatingPlace.allocate();
-                }
-
+                auditoriumSeatingArrangement = auditoriumSeatingArrangement.allocate(seatingOptionSuggested.seats());
                 foundedSuggestions.add(new SuggestionIsMade(seatingOptionSuggested));
             }
         }
