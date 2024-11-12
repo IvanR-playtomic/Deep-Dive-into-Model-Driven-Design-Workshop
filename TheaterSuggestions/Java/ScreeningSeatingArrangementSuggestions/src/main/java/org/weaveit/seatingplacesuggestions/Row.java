@@ -48,8 +48,9 @@ public record Row(
 
         var listOfParties = splitList(seatingPlacesWithDistance, partyRequested)
                 .stream()
-                .map(DistanceOfParty::new)
-                .sorted(Comparator.comparingDouble(DistanceOfParty::calculateDistance))
+                .map(AdjacentSeatingPlaces::new)
+                .filter(AdjacentSeatingPlaces::areAdjacents)
+                .sorted(Comparator.comparingDouble(AdjacentSeatingPlaces::calculateDistance))
                 .toList();
 
         if (listOfParties.isEmpty()) return List.of();
