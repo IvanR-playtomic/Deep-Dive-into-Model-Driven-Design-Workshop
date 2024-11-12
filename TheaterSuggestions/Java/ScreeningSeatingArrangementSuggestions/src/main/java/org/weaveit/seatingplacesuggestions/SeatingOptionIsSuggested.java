@@ -18,6 +18,10 @@ public class SeatingOptionIsSuggested {
         seats.add(seat);
     }
 
+    public void addSeats(List<SeatingPlace> seats) {
+        this.seats.addAll(seats);
+    }
+
     public boolean matchExpectation() {
         return seats.size() == partyRequested;
     }

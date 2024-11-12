@@ -113,6 +113,49 @@ class SeatingArrangementRecommenderTest {
 
         assertThat(suggestionsAreMade.seatNames(PricingCategory.FIRST)).containsExactly("A5", "A6", "A3", "A4", "A7", "A8");
     }
+
+    @Test
+    void suggest_middle_of_the_rows_in_Madison_Seven() throws IOException {
+        // New Amsterdam-18
+        //     1   2   3   4   5   6   7   8   9  10
+        //  A: 2   2   1   1   1   1   1   1   2   2
+        //  B: 2   2   1   1   1   1   1   1   2   2
+        //  C: 2   2   2   2   2   2   2   2   2   2
+        //  D: 2   2   2   2   2   2   2   2   2   2
+        //  E: 3   3   3   3   3   3   3   3   3   3
+        //  F: 3   3   3   3   3   3   3   3   3   3
+        final String showId = "7";
+        final int partyRequested = 2;
+
+        var auditoriumSeatingArrangements =
+                new AuditoriumSeatingArrangements(new AuditoriumLayoutRepository(), new ReservationsProvider());
+        var seatingArrangementRecommender = new SeatingArrangementRecommender(auditoriumSeatingArrangements);
+        var suggestionsAreMade = seatingArrangementRecommender.makeSuggestion(showId, partyRequested);
+
+        assertThat(suggestionsAreMade.seatNames(PricingCategory.FIRST)).containsExactly("A5", "A6", "B5", "B6", "B3", "B4");
+    }
+
+    @Test
+    void suggest_middle_of_the_rows_in_Auditorium_Three() throws IOException {
+        // New Amsterdam-18
+        //     1   2   3   4   5   6   7   8   9  10
+        //  A: 2   2   1   1   1   1   1   1   2   2
+        //  B: 2   2   1   1   1   1   1   1   2   2
+        //  C: 2   2   2   2   2   2   2   2   2   2
+        //  D: 2   2   2   2   2   2   2   2   2   2
+        //  E: 3   3   3   3   3   3   3   3   3   3
+        //  F: 3   3   3   3   3   3   3   3   3   3
+        final String showId = "3";
+        final int partyRequested = 2;
+
+        var auditoriumSeatingArrangements =
+                new AuditoriumSeatingArrangements(new AuditoriumLayoutRepository(), new ReservationsProvider());
+        var seatingArrangementRecommender = new SeatingArrangementRecommender(auditoriumSeatingArrangements);
+        var suggestionsAreMade = seatingArrangementRecommender.makeSuggestion(showId, partyRequested);
+
+        assertThat(suggestionsAreMade.seatNames(PricingCategory.FIRST)).containsExactly("A6", "A7", "B3", "B4");
+        assertThat(suggestionsAreMade.seatNames(PricingCategory.SECOND)).containsExactly("A9", "A10", "B1", "B2", "B9", "B10");
+    }
 }
 
 

@@ -40,18 +40,7 @@ class RowTest {
         SeatingPlace a10 = new SeatingPlace("A", 10, PricingCategory.SECOND, SeatingPlaceAvailability.AVAILABLE);
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
-        List<SeatingPlace> seatingPlaces = offerSeatsNearerTheMiddleOfTheRow(row).stream().limit(partySize).collect(Collectors.toList());
+        List<SeatingPlace> seatingPlaces = row.offerSeatsNearerTheMiddleOfTheRow(PricingCategory.FIRST, partySize).stream().limit(partySize).collect(Collectors.toList());
         assertThat(seatingPlaces).containsExactly(a5, a6);
-    }
-
-    // Deep Modeling: probing the code should start with a prototype.
-    public List<SeatingPlace> offerSeatsNearerTheMiddleOfTheRow(Row row) {
-        var middle = row.seatingPlaces().size() / 2;
-
-        return List.of(getPlace(row, middle), getPlace(row, middle + 1));
-    }
-
-    private static SeatingPlace getPlace(Row row, int index) {
-        return row.seatingPlaces().stream().filter(place -> place.number() == index).findFirst().get();
     }
 }
