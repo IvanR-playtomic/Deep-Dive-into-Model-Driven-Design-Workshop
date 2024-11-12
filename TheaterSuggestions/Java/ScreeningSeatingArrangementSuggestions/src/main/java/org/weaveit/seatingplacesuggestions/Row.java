@@ -23,18 +23,6 @@ public record Row(
         }
         else
             return new SeatingOptionIsNotAvailable(partyRequested, pricingCategory);
-
-        /*for (var seat : seatingPlaces) {
-
-            if (seat.isAvailable() && seat.matchCategory(pricingCategory)) {
-                seatAllocation.addSeat(seat);
-
-                if (seatAllocation.matchExpectation())
-                    return seatAllocation;
-
-            }
-        }
-        return new SeatingOptionIsNotAvailable(partyRequested, pricingCategory);*/
     }
 
     public Row allocate(SeatingPlace seatingPlace) {
@@ -53,6 +41,7 @@ public record Row(
     // Deep Modeling: probing the code should start with a prototype.
     public List<SeatingPlace> offerSeatsNearerTheMiddleOfTheRow(PricingCategory pricingCategory, int partyRequested) {
         var seatingPlacesWithDistance = this.seatingPlaces().stream()
+                .filter(SeatingPlace::isAvailable)
                 .filter(place -> place.matchCategory(pricingCategory))
                 .map(place -> new SeatingPlaceDistanceToCenter(place, Math.abs(place.number() - this.middle())))
                 .toList();
@@ -60,7 +49,6 @@ public record Row(
         var listOfParties = splitList(seatingPlacesWithDistance, partyRequested)
                 .stream()
                 .map(DistanceOfParty::new)
-                .filter(DistanceOfParty::isAvailable)
                 .sorted(Comparator.comparingDouble(DistanceOfParty::calculateDistance))
                 .toList();
 

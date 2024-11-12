@@ -8,11 +8,6 @@ public record DistanceOfParty(
 ) {
     public double calculateDistance() {
         var list = suggestedSeats.stream().sorted(Comparator.comparingDouble(SeatingPlaceDistanceToCenter::distanceToCenter)).toList();
-        if (list.isEmpty()) return 100;
         return list.get(0).distanceToCenter();
-    }
-
-    public Boolean isAvailable() {
-        return suggestedSeats.stream().allMatch(place -> place.seatingPlace().isAvailable());
     }
 }
